@@ -10,6 +10,18 @@ BOX_SIZE = (SCREEN_WIDTH-2*LINE_THICKNES)//3
 
 root = tk.Tk();
 
+
+# y\x 0 1 2
+#   0 _|_|_
+#   1 _|_|_ 
+#   2  | | 
+
+
+class Field:
+    def __init__(self,x,y):
+        self.button = tk.Button(root,bg="white",border=False,activebackground="white",command=root.destroy)
+        self.button.place(height=BOX_SIZE,width=BOX_SIZE,x=x*BOX_SIZE+x*LINE_THICKNES,y=TOP_BAR+y*BOX_SIZE+y*LINE_THICKNES)
+
 def screenSetup():
     root.geometry(str(SCREEN_WIDTH)+"x"+str(SCREEN_HEIGHT))
     root.resizable(False,False)
@@ -17,6 +29,7 @@ def screenSetup():
     canvas = tk.Canvas(root,width=SCREEN_WIDTH,height=SCREEN_HEIGHT,bg="white")
     canvas.pack()
 
+    # Lines to make the board
     canvas.create_rectangle(BOX_SIZE,TOP_BAR,BOX_SIZE+LINE_THICKNES,SCREEN_HEIGHT,fill='black')
     canvas.create_rectangle(2*BOX_SIZE+LINE_THICKNES,TOP_BAR,2*BOX_SIZE+2*LINE_THICKNES,SCREEN_HEIGHT,fill='black')
     canvas.create_rectangle(0,TOP_BAR+BOX_SIZE,SCREEN_WIDTH,TOP_BAR+BOX_SIZE+LINE_THICKNES,fill='black')
@@ -24,4 +37,4 @@ def screenSetup():
 
     for x in range(3):
         for y in range(3):
-            tk.Button(root,bg="white",border=False,activebackground="white",command=root.destroy).place(height=BOX_SIZE,width=BOX_SIZE,x=x*BOX_SIZE+x*LINE_THICKNES,y=TOP_BAR+y*BOX_SIZE+y*LINE_THICKNES)
+            Field(x,y)
