@@ -3,7 +3,7 @@ from game import *
 import tkinter as tk
 from PIL import Image, ImageTk
 
-TOP_BAR = 50
+TOP_BAR = 100
 SCREEN_WIDTH = 610
 SCREEN_HEIGHT = SCREEN_WIDTH + TOP_BAR
 LINE_THICKNES = 5
@@ -26,7 +26,7 @@ class Field:
         self.button = tk.Button(root,bg="white",border=False,activebackground="white",command= lambda: click(self))
         self.button.place(height=BOX_SIZE,width=BOX_SIZE,x=self.x_px,y=self.y_px)
 
-        self.contain = "e" # could be "X", "O" or "empty"
+        self.contain = EMPTY # could be CROSS, CIRCLE or EMPTY
 
         self.crossLabel, self.circleLabel = imageLoad()
 
@@ -43,6 +43,14 @@ class Field:
         ### Debug
         print(f"button {self.x}, {self.y} is disabled")
 
+    def reset(self):
+        self.crossLabel.place_forget()
+        self.circleLabel.place_forget()
+        self.contain = EMPTY
+        self.button.config(command= lambda: click(self))
+
+        ### Debug
+        print(f"Field {self.x}, {self.y} is reset")
 
 def screenSetup():
     root.geometry(str(SCREEN_WIDTH)+"x"+str(SCREEN_HEIGHT))
@@ -56,6 +64,10 @@ def screenSetup():
     canvas.create_rectangle(2*BOX_SIZE+LINE_THICKNES,TOP_BAR,2*BOX_SIZE+2*LINE_THICKNES,SCREEN_HEIGHT,fill='black')
     canvas.create_rectangle(0,TOP_BAR+BOX_SIZE,SCREEN_WIDTH,TOP_BAR+BOX_SIZE+LINE_THICKNES,fill='black')
     canvas.create_rectangle(0,TOP_BAR+2*BOX_SIZE+LINE_THICKNES,SCREEN_WIDTH,TOP_BAR+2*BOX_SIZE+2*LINE_THICKNES,fill='black')
+
+
+    resetButton = tk.Button(root,bg="blue",border=False,activebackground="blue", fg="white", text="RESET", command=resetGame)
+    resetButton.place(height=TOP_BAR*3//4, width=SCREEN_WIDTH//6, x=SCREEN_WIDTH*2/3, y=TOP_BAR//8)
 
     for y in range(3):
         for x in range(3):

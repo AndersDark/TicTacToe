@@ -4,6 +4,6 @@ def botPlay():
     print("Bot: ")
     for row in board:
         for field in row:
-            if field.contain == 'e':
+            if field.contain == EMPTY:
                 click(field)
                 return

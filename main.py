@@ -2,13 +2,14 @@ from graphics import *
 from bot import *
 from game import *
 
+BOT_PLAYER = CROSS
 
 def main():
     screenSetup()
     while(True):
         root.update()
         
-        if (whoTurn() == 'O' and isGamePlaying()):
+        if (whoTurn() == BOT_PLAYER and isGamePlaying()):
             botPlay()
 
     

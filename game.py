@@ -1,11 +1,15 @@
 from graphics import *
 
+CROSS = 'X'
+CIRCLE = 'O'
+EMPTY = 'e'
+
 # The board will include objects of the Field class
 board = [[None,None,None],
          [None,None,None],
          [None,None,None]]
 
-currentPlayer = "X" #Cycles between X and O, X starts.
+currentPlayer = CROSS #Cycles between X and O, X starts.
 
 gamePlaying = True
 
@@ -19,19 +23,19 @@ def isGamePlaying():
 def checkWin():
     # Horisontal check
     for row in board:
-        if (row[0].contain == row[1].contain == row[2].contain != 'e'):
+        if (row[0].contain == row[1].contain == row[2].contain != EMPTY):
             return True
     
     # Vertical check
     for i in range(len(board)):
-        if (board[0][i].contain == board[1][i].contain == board[2][i].contain != 'e'):
+        if (board[0][i].contain == board[1][i].contain == board[2][i].contain != EMPTY):
             return True
 
     # Diagonal check
-    if (board[0][0].contain == board[1][1].contain == board[2][2].contain != 'e'):
+    if (board[0][0].contain == board[1][1].contain == board[2][2].contain != EMPTY):
         return True
     
-    if (board[0][2].contain == board[1][1].contain == board[2][0].contain != 'e'):
+    if (board[0][2].contain == board[1][1].contain == board[2][0].contain != EMPTY):
         return True
 
     return False    
@@ -40,7 +44,7 @@ def checkWin():
 def checkDraw():
     for row in board:
         for field in row:
-            if field.contain == 'e': #empty field
+            if field.contain == EMPTY:
                 return False
     return True
 
@@ -48,23 +52,23 @@ def checkDraw():
 def disablePlay():
     for row in board:
         for field in row:
-            if field.contain == 'e': #empty field
+            if field.contain == EMPTY:
                 field.disable()
 
 
 def click(field):
-    # A board field can contain "e" (empty), "X" or "O"
-    if field.contain == "e":
+    # A board field can contain EMPTY, CROSS or CIRCLE
+    if field.contain == EMPTY:
         global currentPlayer
         field.contain = currentPlayer
 
-        if currentPlayer == "X":
+        if currentPlayer == CROSS:
             field.drawCross()
-            currentPlayer = "O"
+            currentPlayer = CIRCLE
 
         else:
             field.drawCircle()
-            currentPlayer = "X"
+            currentPlayer = CROSS
 
     ### For debug
     for row in board:
@@ -76,7 +80,7 @@ def click(field):
     ###
 
     global gamePlaying
-    
+
     if checkWin():
             gamePlaying = False
             disablePlay()
@@ -85,3 +89,19 @@ def click(field):
     elif checkDraw(): #Board is full and no winner
         gamePlaying = False
         print("It's a draw")
+
+def resetGame():
+    global gamePlaying
+    global currentPlayer
+
+    for row in board:
+        for field in row:
+            field.reset()
+
+    gamePlaying = True
+    currentPlayer = CROSS
+
+    #DEBUG
+    print("###############")
+    print("-----RESET-----")
+    print("###############")
