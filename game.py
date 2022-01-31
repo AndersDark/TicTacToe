@@ -5,7 +5,16 @@ board = [[None,None,None],
          [None,None,None],
          [None,None,None]]
 
-currentPlayer = "X" #Cycles between X and O, X starts
+currentPlayer = "X" #Cycles between X and O, X starts.
+
+gamePlaying = True
+
+
+def whoTurn():
+    return currentPlayer
+
+def isGamePlaying():
+    return gamePlaying
 
 def checkWin():
     # Horisontal check
@@ -35,11 +44,13 @@ def checkDraw():
                 return False
     return True
 
+
 def disablePlay():
     for row in board:
         for field in row:
             if field.contain == 'e': #empty field
                 field.disable()
+
 
 def click(field):
     # A board field can contain "e" (empty), "X" or "O"
@@ -64,9 +75,13 @@ def click(field):
     print("-------------")
     ###
 
+    global gamePlaying
+    
     if checkWin():
-        disablePlay()
-        print(f"{field.contain} won!")
+            gamePlaying = False
+            disablePlay()
+            print(f"{field.contain} won!")
 
     elif checkDraw(): #Board is full and no winner
+        gamePlaying = False
         print("It's a draw")

@@ -1,11 +1,16 @@
-import graphics as g
-
+from graphics import *
+from bot import *
+from game import *
 
 
 def main():
-    g.screenSetup()
-    g.root.mainloop()
-    
+    screenSetup()
+    while(True):
+        root.update()
+        
+        if (whoTurn() == 'O' and isGamePlaying()):
+            botPlay()
 
+    
 if __name__ == "__main__":
-    main()
+    main()  

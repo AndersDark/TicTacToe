@@ -11,12 +11,10 @@ BOX_SIZE = (SCREEN_WIDTH-2*LINE_THICKNES)//3
 
 root = tk.Tk();
 
-
 # y\x 0 1 2
 #   0 _|_|_
 #   1 _|_|_ 
 #   2  | | 
-
 
 class Field:
     def __init__(self, x, y):
@@ -62,6 +60,7 @@ def screenSetup():
     for y in range(3):
         for x in range(3):
             board[y][x] = Field(x,y)
+
 
 def imageLoad():
     crossImage = ImageTk.PhotoImage(Image.open("./assets/cross.png"))
