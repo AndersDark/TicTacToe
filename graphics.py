@@ -38,7 +38,13 @@ class Field:
 
     def drawCircle(self):
         self.circleLabel.place(x=self.x_px, y=self.y_px)
-    
+
+    def disable(self):
+        self.button.config(command= lambda : None)
+
+        ### Debug
+        print(f"button {self.x}, {self.y} is disabled")
+
 
 def screenSetup():
     root.geometry(str(SCREEN_WIDTH)+"x"+str(SCREEN_HEIGHT))

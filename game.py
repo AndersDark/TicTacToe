@@ -35,6 +35,11 @@ def checkDraw():
                 return False
     return True
 
+def disablePlay():
+    for row in board:
+        for field in row:
+            if field.contain == 'e': #empty field
+                field.disable()
 
 def click(field):
     # A board field can contain "e" (empty), "X" or "O"
@@ -57,9 +62,11 @@ def click(field):
         print()
     
     print("-------------")
+    ###
 
     if checkWin():
+        disablePlay()
         print(f"{field.contain} won!")
 
-    elif checkDraw():
+    elif checkDraw(): #Board is full and no winner
         print("It's a draw")
