@@ -11,46 +11,14 @@ BOX_SIZE = (SCREEN_WIDTH-2*LINE_THICKNES)//3
 
 root = tk.Tk();
 
+buttons = [[None,None,None],
+           [None,None,None],
+           [None,None,None]]
+
 # y\x 0 1 2
 #   0 _|_|_
 #   1 _|_|_ 
 #   2  | | 
-
-class Field:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.x_px = x*BOX_SIZE+x*LINE_THICKNES
-        self.y_px = TOP_BAR+y*BOX_SIZE+y*LINE_THICKNES
-
-        self.button = tk.Button(root,bg="white",border=False,activebackground="white",command= lambda: click(self))
-        self.button.place(height=BOX_SIZE,width=BOX_SIZE,x=self.x_px,y=self.y_px)
-
-        self.contain = EMPTY # could be CROSS, CIRCLE or EMPTY
-
-        self.crossLabel, self.circleLabel = imageLoad()
-
-
-    def drawCross(self):
-        self.crossLabel.place(x=self.x_px, y=self.y_px)
-
-    def drawCircle(self):
-        self.circleLabel.place(x=self.x_px, y=self.y_px)
-
-    def disable(self):
-        self.button.config(command= lambda : None)
-
-        ### Debug
-        print(f"button {self.x}, {self.y} is disabled")
-
-    def reset(self):
-        self.crossLabel.place_forget()
-        self.circleLabel.place_forget()
-        self.contain = EMPTY
-        self.button.config(command= lambda: click(self))
-
-        ### Debug
-        print(f"Field {self.x}, {self.y} is reset")
 
 def screenSetup():
     root.geometry(str(SCREEN_WIDTH)+"x"+str(SCREEN_HEIGHT))
@@ -71,8 +39,47 @@ def screenSetup():
 
     for y in range(3):
         for x in range(3):
-            board[y][x] = Field(x,y)
+            buttons[x][y] = Button(x,y)
 
+def screenUpdate(board):
+    for (row, buttonRow) in zip(board, buttons):
+        for field, button in zip(row, buttonRow):
+            if(field == CROSS and button.isEmpty):
+                button.drawCross()
+            
+            elif(field == CIRCLE and button.isEmpty):
+                button.drawCircle()
+
+            elif(field == EMPTY and not button.isEmpty):
+                button.reset()
+
+class Button:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.x_px = x*BOX_SIZE+x*LINE_THICKNES
+        self.y_px = TOP_BAR+y*BOX_SIZE+y*LINE_THICKNES
+
+        self.button = tk.Button(root,bg="white",border=False,activebackground="white",command= lambda: clickOnField(self.x,self.y))
+        self.button.place(height=BOX_SIZE,width=BOX_SIZE,x=self.x_px,y=self.y_px)
+
+        self.crossLabel, self.circleLabel = imageLoad()
+
+        self.isEmpty = True
+
+
+    def drawCross(self):
+        self.crossLabel.place(x=self.x_px, y=self.y_px)
+        self.isEmpty = False
+
+    def drawCircle(self):
+        self.circleLabel.place(x=self.x_px, y=self.y_px)
+        self.isEmpty = False
+
+    def reset(self):
+        self.crossLabel.place_forget()
+        self.circleLabel.place_forget()
+        self.isEmpty = True
 
 def imageLoad():
     crossImage = ImageTk.PhotoImage(Image.open("./assets/cross.png"))

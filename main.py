@@ -1,15 +1,16 @@
-from graphics import *
+from window import *
 from bot import *
 from game import *
 
-BOT_PLAYER = CROSS
+BOT_PLAYER = CIRCLE
 
 def main():
     screenSetup()
     while(True):
         root.update()
-        
-        if (whoTurn() == BOT_PLAYER and isGamePlaying()):
+        screenUpdate(mainGameBoard)
+        checkGameState(mainGameBoard)
+        if(whoTurn() == BOT_PLAYER):
             botPlay()
 
     
